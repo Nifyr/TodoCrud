@@ -5,9 +5,9 @@ namespace TodoCrud.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class TaskController(ILogger<TaskController> logger) : ControllerBase
+    public class TasksController(ILogger<TasksController> logger) : ControllerBase
     {
-        private readonly ILogger<TaskController> _logger = logger;
+        private readonly ILogger<TasksController> _logger = logger;
 
         [HttpGet(Name = "GetTasks")]
         public IEnumerable<Entities.Task> Get()
