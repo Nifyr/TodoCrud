@@ -8,7 +8,7 @@
         public DateTime? DueDate { get; set; }
         public IEnumerable<string> Tags { get; set; } = [];
         public DateTime CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
         public override string ToString()
         {

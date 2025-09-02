@@ -19,7 +19,8 @@ namespace TodoCrud.Api.Controllers
                     Id = 1,
                     Title = "Sample Task",
                     Completed = false,
-                    CreatedAt = DateTime.UtcNow
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
                 },
                 new Entities.Task
                 {
@@ -28,7 +29,8 @@ namespace TodoCrud.Api.Controllers
                     Completed = true,
                     CreatedAt = DateTime.UtcNow.AddDays(-1),
                     DueDate = DateTime.UtcNow.AddDays(7),
-                    Tags = ["work", "urgent"]
+                    Tags = ["work", "urgent"],
+                    UpdatedAt = DateTime.UtcNow.AddDays(-1)
                 },
                 new Entities.Task
                 {
