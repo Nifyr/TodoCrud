@@ -6,7 +6,7 @@
         public string Title { get; set; } = string.Empty; // min length 1, max length 140
         public bool Completed { get; set; }
         public DateTime? DueDate { get; set; }
-        public IEnumerable<string> Tags { get; set; } = Array.Empty<string>();
+        public IEnumerable<string> Tags { get; set; } = [];
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
     }
