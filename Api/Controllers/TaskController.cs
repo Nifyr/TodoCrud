@@ -1,0 +1,45 @@
+using Microsoft.AspNetCore.Mvc;
+using TodoCrud.Entities;
+
+namespace TodoCrud.Api.Controllers
+{
+    [ApiController]
+    [Route("[controller]")]
+    public class TaskController(ILogger<TaskController> logger) : ControllerBase
+    {
+        private readonly ILogger<TaskController> _logger = logger;
+
+        [HttpGet(Name = "GetTasks")]
+        public IEnumerable<Entities.Task> Get()
+        {
+            return
+            [
+                new Entities.Task
+                {
+                    Id = 1,
+                    Title = "Sample Task",
+                    Completed = false,
+                    CreatedAt = DateTime.UtcNow
+                },
+                new Entities.Task
+                {
+                    Id = 2,
+                    Title = "Another Task",
+                    Completed = true,
+                    CreatedAt = DateTime.UtcNow.AddDays(-1),
+                    DueDate = DateTime.UtcNow.AddDays(7),
+                    Tags = ["work", "urgent"]
+                },
+                new Entities.Task
+                {
+                    Id = 3,
+                    Title = "Third Task",
+                    Completed = false,
+                    CreatedAt = DateTime.UtcNow.AddDays(-2),
+                    Tags = ["personal"],
+                    UpdatedAt = DateTime.UtcNow
+                }
+            ];
+        }
+    }
+}
