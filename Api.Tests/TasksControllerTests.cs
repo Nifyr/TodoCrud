@@ -54,7 +54,7 @@ namespace TodoCrud.Api.Tests
             Assert.AreEqual(HttpStatusCode.BadRequest, response1.StatusCode);
 
             // Title too long
-            var longTitle = new string('a', 141);
+            var longTitle = new string('a', Entities.Task.TitleMaxLength + 1);
             var response2 = await _client.PostAsJsonAsync("/tasks", new Entities.Task { Title = longTitle, Completed = false });
             Assert.AreEqual(HttpStatusCode.BadRequest, response2.StatusCode);
 

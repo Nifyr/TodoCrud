@@ -2,8 +2,11 @@
 {
     public class Task
     {
+        public const int TitleMinLength = 1;
+        public const int TitleMaxLength = 140;
+
         public int Id { get; set; } // Primary key
-        public string Title { get; set; } = string.Empty; // min length 1, max length 140
+        public string Title { get; set; } = string.Empty;
         public bool Completed { get; set; }
         public DateTime? DueDate { get; set; }
         public IEnumerable<string> Tags { get; set; } = [];
