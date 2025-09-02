@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 using TodoCrud.Api.Data;
 using TodoCrud.Entities;
 
@@ -10,39 +11,28 @@ namespace TodoCrud.Api.Controllers
     {
         private readonly TodoContext _context = context;
 
-        [HttpGet(Name = "GetTasks")]
-        public IEnumerable<Entities.Task> Get()
+        [HttpGet]
+        public ActionResult<IEnumerable<Entities.Task>> Get([FromQuery] string? query, [FromQuery] bool? completed)
         {
-            return
-            [
-                new Entities.Task
-                {
-                    Id = 1,
-                    Title = "Sample Task",
-                    Completed = false,
-                    CreatedAt = DateTime.UtcNow,
-                    UpdatedAt = DateTime.UtcNow
-                },
-                new Entities.Task
-                {
-                    Id = 2,
-                    Title = "Another Task",
-                    Completed = true,
-                    CreatedAt = DateTime.UtcNow.AddDays(-1),
-                    DueDate = DateTime.UtcNow.AddDays(7),
-                    Tags = ["work", "urgent"],
-                    UpdatedAt = DateTime.UtcNow.AddDays(-1)
-                },
-                new Entities.Task
-                {
-                    Id = 3,
-                    Title = "Third Task",
-                    Completed = false,
-                    CreatedAt = DateTime.UtcNow.AddDays(-2),
-                    Tags = ["personal"],
-                    UpdatedAt = DateTime.UtcNow
-                }
-            ];
+            throw new NotImplementedException();
+        }
+
+        [HttpPost]
+        public ActionResult<Entities.Task> Post([FromBody] Entities.Task newTask)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpPut("{id}")]
+        public ActionResult<Entities.Task> Put(int id, [FromBody] JsonElement updates)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
