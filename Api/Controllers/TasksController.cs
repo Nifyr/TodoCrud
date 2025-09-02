@@ -1,13 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
+using TodoCrud.Api.Data;
 using TodoCrud.Entities;
 
 namespace TodoCrud.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class TasksController(ILogger<TasksController> logger) : ControllerBase
+    public class TasksController(TodoContext context) : ControllerBase
     {
-        private readonly ILogger<TasksController> _logger = logger;
+        private readonly TodoContext _context = context;
 
         [HttpGet(Name = "GetTasks")]
         public IEnumerable<Entities.Task> Get()

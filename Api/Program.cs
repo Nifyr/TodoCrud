@@ -1,6 +1,12 @@
+using Microsoft.EntityFrameworkCore;
+using TodoCrud.Api.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+// Using In-Memory Database for simplicity. Can be replaced with a real database provider.
+builder.Services.AddDbContext<TodoContext>(options => options.UseInMemoryDatabase("TodoDb"));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
