@@ -1,12 +1,9 @@
-using System.Net.Http.Json;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using TodoCrud.Entities;
-
 namespace TodoCrud.WinForms
 {
     public partial class Main : Form
     {
+        private readonly TodoApiClient apiClient = new();
+
         public Main()
         {
             InitializeComponent();
@@ -14,48 +11,21 @@ namespace TodoCrud.WinForms
             Populate(null);
         }
 
-        struct SearchFilter
+        private void Populate(TodoApiClient.SearchFilter? filter)
         {
-            public string SearchString { get; set; }
-            public bool IncludeCompleted { get; set; }
-        }
-
-        private void Populate(SearchFilter? filter)
+            TodoApiClient.ApiResponse<List<Entities.Task>> response = apiClient.GetTasks(filter);
+            if (!response.Success || response.Content is null)
         {
-            using HttpClient client = new();
-            client.BaseAddress = new Uri("http://localhost:5185/");
-            HttpResponseMessage response;
-            try
-            {
-                response = client.GetAsync("tasks").GetAwaiter().GetResult();
-            }
-            catch (HttpRequestException)
-            {
-                // Could not reach the API
-                RetrieveFailureMessage();
+                FailureMessage(response.ErrorMessage);
                 return;
             }
-
-            if (!response.IsSuccessStatusCode)
-            {
-                // Received response but not successful
-                RetrieveFailureMessage();
-                return;
+            taskListBox.DataSource = response.Content;
             }
 
-            List<Entities.Task>? tasks = response.Content.ReadFromJsonAsync<List<Entities.Task>>().Result;
-            if (tasks is null)
+        private static void FailureMessage(string? errorMessage)
             {
-                // Response content could not be deserialized
-                RetrieveFailureMessage();
-                return;
-            }
-            taskListBox.DataSource = tasks;
-        }
-
-        private static void RetrieveFailureMessage()
-        {
-            MessageBox.Show("Failed to retrieve tasks from the API.");
+            errorMessage ??= "Unknown error.";
+            MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void TaskListBox_SelectedIndexChanged(object sender, EventArgs e)
