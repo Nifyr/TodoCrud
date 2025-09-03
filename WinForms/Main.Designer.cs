@@ -31,11 +31,11 @@
             tableLayoutPanel1 = new TableLayoutPanel();
             panel1 = new Panel();
             tableLayoutPanel2 = new TableLayoutPanel();
-            textBox1 = new TextBox();
-            button1 = new Button();
+            searchTextBox = new TextBox();
+            searchButton = new Button();
             deleteTaskButton = new Button();
             addTaskButton = new Button();
-            button2 = new Button();
+            refreshButton = new Button();
             showCompletedCheckBox = new CheckBox();
             taskListBox = new ListBox();
             panel2 = new Panel();
@@ -108,11 +108,11 @@
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle());
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle());
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle());
-            tableLayoutPanel2.Controls.Add(textBox1, 0, 0);
-            tableLayoutPanel2.Controls.Add(button1, 1, 0);
+            tableLayoutPanel2.Controls.Add(searchTextBox, 0, 0);
+            tableLayoutPanel2.Controls.Add(searchButton, 1, 0);
             tableLayoutPanel2.Controls.Add(deleteTaskButton, 5, 0);
             tableLayoutPanel2.Controls.Add(addTaskButton, 4, 0);
-            tableLayoutPanel2.Controls.Add(button2, 3, 0);
+            tableLayoutPanel2.Controls.Add(refreshButton, 3, 0);
             tableLayoutPanel2.Controls.Add(showCompletedCheckBox, 2, 0);
             tableLayoutPanel2.Dock = DockStyle.Fill;
             tableLayoutPanel2.Location = new Point(0, 0);
@@ -122,25 +122,27 @@
             tableLayoutPanel2.Size = new Size(794, 31);
             tableLayoutPanel2.TabIndex = 2;
             // 
-            // textBox1
+            // searchTextBox
             // 
-            textBox1.Dock = DockStyle.Fill;
-            textBox1.Location = new Point(3, 3);
-            textBox1.Name = "textBox1";
-            textBox1.PlaceholderText = "Search tasks...";
-            textBox1.Size = new Size(446, 23);
-            textBox1.TabIndex = 0;
+            searchTextBox.Dock = DockStyle.Fill;
+            searchTextBox.Location = new Point(3, 3);
+            searchTextBox.Name = "searchTextBox";
+            searchTextBox.PlaceholderText = "Search tasks...";
+            searchTextBox.Size = new Size(446, 23);
+            searchTextBox.TabIndex = 0;
+            searchTextBox.KeyDown += SearchTextBox_KeyDown;
             // 
-            // button1
+            // searchButton
             // 
-            button1.AutoSize = true;
-            button1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            button1.Location = new Point(455, 3);
-            button1.Name = "button1";
-            button1.Size = new Size(52, 25);
-            button1.TabIndex = 1;
-            button1.Text = "Search";
-            button1.UseVisualStyleBackColor = true;
+            searchButton.AutoSize = true;
+            searchButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            searchButton.Location = new Point(455, 3);
+            searchButton.Name = "searchButton";
+            searchButton.Size = new Size(52, 25);
+            searchButton.TabIndex = 1;
+            searchButton.Text = "Search";
+            searchButton.UseVisualStyleBackColor = true;
+            searchButton.Click += SimpleSearchEventHandler;
             // 
             // deleteTaskButton
             // 
@@ -166,16 +168,17 @@
             addTaskButton.UseVisualStyleBackColor = true;
             addTaskButton.Click += AddTaskButton_Click;
             // 
-            // button2
+            // refreshButton
             // 
-            button2.AutoSize = true;
-            button2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            button2.Location = new Point(634, 3);
-            button2.Name = "button2";
-            button2.Size = new Size(56, 25);
-            button2.TabIndex = 2;
-            button2.Text = "Refresh";
-            button2.UseVisualStyleBackColor = true;
+            refreshButton.AutoSize = true;
+            refreshButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            refreshButton.Location = new Point(634, 3);
+            refreshButton.Name = "refreshButton";
+            refreshButton.Size = new Size(56, 25);
+            refreshButton.TabIndex = 2;
+            refreshButton.Text = "Refresh";
+            refreshButton.UseVisualStyleBackColor = true;
+            refreshButton.Click += SimpleSearchEventHandler;
             // 
             // showCompletedCheckBox
             // 
@@ -187,6 +190,7 @@
             showCompletedCheckBox.TabIndex = 5;
             showCompletedCheckBox.Text = "Show completed";
             showCompletedCheckBox.UseVisualStyleBackColor = true;
+            showCompletedCheckBox.CheckedChanged += SimpleSearchEventHandler;
             // 
             // taskListBox
             // 
@@ -506,10 +510,10 @@
         private Panel panel1;
         private ListBox taskListBox;
         private Panel panel2;
-        private TextBox textBox1;
-        private Button button1;
+        private TextBox searchTextBox;
+        private Button searchButton;
         private TableLayoutPanel tableLayoutPanel2;
-        private Button button2;
+        private Button refreshButton;
         private Button addTaskButton;
         private Button deleteTaskButton;
         private TableLayoutPanel tableLayoutPanel3;

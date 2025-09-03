@@ -8,23 +8,49 @@ namespace TodoCrud.WinForms
         {
             InitializeComponent();
 
-            Populate(null);
+            RefreshTaskList();
         }
 
-        private void Populate(TodoApiClient.SearchFilter? filter)
+        private void RefreshTaskList()
         {
+            int lastSelectedTaskId = -1;
+            if (taskListBox.SelectedItem is Entities.Task selectedTask)
+            {
+                lastSelectedTaskId = selectedTask.Id;
+            }
+            TodoApiClient.SearchFilter filter = new()
+            {
+                SearchString = searchTextBox.Text,
+                IncludeCompleted = showCompletedCheckBox.Checked
+            };
             apiClient.GetTasks(filter).Handle(tasks =>
             {
+                taskListBox.SelectedIndexChanged -= TaskListBox_SelectedIndexChanged!;
                 taskListBox.DataSource = tasks;
                 if (tasks.Count > 0)
                 {
-                    taskListBox.SelectedIndex = 0;
+                    // Try to reselect the previously selected task, if it still exists
+                    int indexToSelect = 0;
+                    if (lastSelectedTaskId != -1)
+                    {
+                        indexToSelect = tasks.FindIndex(t => t.Id == lastSelectedTaskId);
+                        if (indexToSelect == -1)
+                        {
+                            indexToSelect = 0;
+                        }
+                    }
+                    taskListBox.SelectedIndex = indexToSelect;
+                    if (taskListBox.SelectedItem is Entities.Task task && task.Id != lastSelectedTaskId)
+                    {
+                        UpdateTaskDisplay();
+                    }
                 }
                 else
                 {
                     DisableTaskInputControls();
                     ClearTaskDisplay();
                 }
+                taskListBox.SelectedIndexChanged += TaskListBox_SelectedIndexChanged!;
             });
         }
 
@@ -165,7 +191,7 @@ namespace TodoCrud.WinForms
                 return;
             apiClient.DeleteTask(task.Id).Handle(_ =>
             {
-                Populate(null);
+                RefreshTaskList();
             });
         }
 
@@ -180,16 +206,14 @@ namespace TodoCrud.WinForms
                 DueDate = dueDateCheckBox.Checked ? dueDateDateTimePicker.Value : null,
                 Tags = [.. tagsListBox.Items.Cast<string>()]
             };
-            apiClient.UpdateTask(task.Id, updatedTask).Handle(updatedTask =>
-            {
-                int selectedIndex = taskListBox.SelectedIndex;
-                if (taskListBox.DataSource is IEnumerable<Entities.Task> tasks)
-                {
-                    List<Entities.Task> newTasks = [.. tasks];
-                    newTasks[selectedIndex] = updatedTask;
-                    taskListBox.DataSource = newTasks;
-                    taskListBox.SelectedIndex = selectedIndex;
-                }
+            apiClient.UpdateTask(task.Id, updatedTask).Handle(updatedTask => {
+                task.Id = updatedTask.Id;
+                task.Title = updatedTask.Title;
+                task.Completed = updatedTask.Completed;
+                task.DueDate = updatedTask.DueDate;
+                task.Tags = updatedTask.Tags;
+                task.CreatedAt = updatedTask.CreatedAt;
+                task.UpdatedAt = updatedTask.UpdatedAt;
             });
         }
 
@@ -268,6 +292,23 @@ namespace TodoCrud.WinForms
             newTags.RemoveAt(selectedIndex);
             tagsListBox.DataSource = newTags;
             UpdateTask();
+        }
+
+        private void SearchTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode != Keys.Enter)
+                return;
+
+            // Prevent the ding sound
+            e.Handled = true;
+            e.SuppressKeyPress = true;
+
+            RefreshTaskList();
+        }
+
+        private void SimpleSearchEventHandler(object sender, EventArgs e)
+        {
+            RefreshTaskList();
         }
     }
 
