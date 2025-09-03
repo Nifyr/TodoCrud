@@ -24,54 +24,38 @@ namespace TodoCrud.WinForms
             public string? ErrorMessage { get; set; }
         }
 
-        internal ApiResponse<List<Entities.Task>> GetTasks(SearchFilter? filter)
+        // Centralized method to handle API requests with error handling and deserialization
+        private static ApiResponse<T> ExecuteWithHandling<T>(Func<HttpResponseMessage> requestFunc)
         {
             try
             {
-                string queryString = "tasks";
-                if (filter is not null)
-                {
-                    List<string> queryParams = [];
-                    if (!string.IsNullOrWhiteSpace(filter.Value.SearchString))
-                    {
-                        queryParams.Add($"query={Uri.EscapeDataString(filter.Value.SearchString)}");
-                    }
-                    if (!filter.Value.IncludeCompleted)
-                    {
-                        queryParams.Add("completed=false");
-                    }
-                    if (queryParams.Count > 0)
-                    {
-                        queryString += "?" + string.Join("&", queryParams);
-                    }
-                }
-                HttpResponseMessage response = _client.GetAsync(queryString).GetAwaiter().GetResult();
+                HttpResponseMessage response = requestFunc();
                 if (!response.IsSuccessStatusCode)
                 {
-                    return new ApiResponse<List<Entities.Task>>
+                    return new ApiResponse<T>
                     {
                         Success = false,
                         ErrorMessage = $"API returned status code {response.StatusCode}"
                     };
                 }
-                List<Entities.Task>? tasks = response.Content.ReadFromJsonAsync<List<Entities.Task>>().Result;
-                if (tasks is null)
+                T? content = response.Content.ReadFromJsonAsync<T>().Result;
+                if (content is null)
                 {
-                    return new ApiResponse<List<Entities.Task>>
+                    return new ApiResponse<T>
                     {
                         Success = false,
                         ErrorMessage = "Failed to deserialize API response"
                     };
                 }
-                return new ApiResponse<List<Entities.Task>>
+                return new ApiResponse<T>
                 {
                     Success = true,
-                    Content = tasks
+                    Content = content
                 };
             }
             catch (HttpRequestException ex)
             {
-                return new ApiResponse<List<Entities.Task>>
+                return new ApiResponse<T>
                 {
                     Success = false,
                     ErrorMessage = $"HTTP request failed: {ex.Message}"
@@ -79,12 +63,48 @@ namespace TodoCrud.WinForms
             }
             catch (Exception ex)
             {
-                return new ApiResponse<List<Entities.Task>>
+                return new ApiResponse<T>
                 {
                     Success = false,
                     ErrorMessage = $"Unexpected error: {ex.Message}"
                 };
             }
+        }
+
+        internal ApiResponse<List<Entities.Task>> GetTasks(SearchFilter? filter)
+        {
+            string queryString = "tasks";
+            if (filter is not null)
+            {
+                List<string> queryParams = [];
+                if (!string.IsNullOrWhiteSpace(filter.Value.SearchString))
+                {
+                    queryParams.Add($"query={Uri.EscapeDataString(filter.Value.SearchString)}");
+                }
+                if (!filter.Value.IncludeCompleted)
+                {
+                    queryParams.Add("completed=false");
+                }
+                if (queryParams.Count > 0)
+                {
+                    queryString += "?" + string.Join("&", queryParams);
+                }
+            }
+            return ExecuteWithHandling<List<Entities.Task>>(() =>
+                _client.GetAsync(queryString).GetAwaiter().GetResult());
+        }
+
+        internal ApiResponse<Entities.Task> AddNewTask()
+        {
+            Entities.Task newTask = new()
+            {
+                Title = "New Task",
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
+                Tags = []
+            };
+            return ExecuteWithHandling<Entities.Task>(() =>
+                _client.PostAsJsonAsync("tasks", newTask).GetAwaiter().GetResult());
         }
     }
 }

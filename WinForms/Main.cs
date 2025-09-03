@@ -13,19 +13,9 @@ namespace TodoCrud.WinForms
 
         private void Populate(TodoApiClient.SearchFilter? filter)
         {
-            TodoApiClient.ApiResponse<List<Entities.Task>> response = apiClient.GetTasks(filter);
-            if (!response.Success || response.Content is null)
-        {
-                FailureMessage(response.ErrorMessage);
-                return;
-            }
-            taskListBox.DataSource = response.Content;
-            }
-
-        private static void FailureMessage(string? errorMessage)
-            {
-            errorMessage ??= "Unknown error.";
-            MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            apiClient.GetTasks(filter).Handle(tasks => {
+                taskListBox.DataSource = tasks;
+            });
         }
 
         private void TaskListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -109,6 +99,38 @@ namespace TodoCrud.WinForms
             updatedAtDateTimePicker3.Value = DateTime.Now;
             tagsListBox.DataSource = null;
             tagTextBox.Text = string.Empty;
+        }
+
+        private void AddTaskButton_Click(object sender, EventArgs e)
+        {
+            apiClient.AddNewTask().Handle(task =>
+            {
+                IEnumerable<Entities.Task>? newTasks = [];
+                if (taskListBox.DataSource is IEnumerable<Entities.Task> tasks)
+                {
+                    newTasks = tasks;
+                }
+                taskListBox.DataSource = newTasks.Append(task).ToList();
+                taskListBox.SelectedItem = task;
+            });
+        }
+    }
+
+    internal static class Extensions
+    {
+        // Helper method to handle API responses. Gotta love functional programming.
+        internal static bool Handle<T>(this TodoApiClient.ApiResponse<T> response, Action<T>? onSuccess)
+        {
+            if (!response.Success || response.Content is null)
+            {
+                string? errorMessage = response.ErrorMessage;
+                errorMessage ??= "Unknown error.";
+                MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            if (onSuccess is not null)
+                onSuccess(response.Content);
+            return true;
         }
     }
 }

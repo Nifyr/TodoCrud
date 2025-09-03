@@ -34,7 +34,7 @@
             textBox1 = new TextBox();
             button1 = new Button();
             button4 = new Button();
-            button3 = new Button();
+            addTaskButton = new Button();
             button2 = new Button();
             showCompletedCheckBox = new CheckBox();
             taskListBox = new ListBox();
@@ -111,7 +111,7 @@
             tableLayoutPanel2.Controls.Add(textBox1, 0, 0);
             tableLayoutPanel2.Controls.Add(button1, 1, 0);
             tableLayoutPanel2.Controls.Add(button4, 5, 0);
-            tableLayoutPanel2.Controls.Add(button3, 4, 0);
+            tableLayoutPanel2.Controls.Add(addTaskButton, 4, 0);
             tableLayoutPanel2.Controls.Add(button2, 3, 0);
             tableLayoutPanel2.Controls.Add(showCompletedCheckBox, 2, 0);
             tableLayoutPanel2.Dock = DockStyle.Fill;
@@ -153,16 +153,17 @@
             button4.Text = "Delete";
             button4.UseVisualStyleBackColor = true;
             // 
-            // button3
+            // addTaskButton
             // 
-            button3.AutoSize = true;
-            button3.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            button3.Location = new Point(696, 3);
-            button3.Name = "button3";
-            button3.Size = new Size(39, 25);
-            button3.TabIndex = 3;
-            button3.Text = "Add";
-            button3.UseVisualStyleBackColor = true;
+            addTaskButton.AutoSize = true;
+            addTaskButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            addTaskButton.Location = new Point(696, 3);
+            addTaskButton.Name = "addTaskButton";
+            addTaskButton.Size = new Size(39, 25);
+            addTaskButton.TabIndex = 3;
+            addTaskButton.Text = "Add";
+            addTaskButton.UseVisualStyleBackColor = true;
+            addTaskButton.Click += AddTaskButton_Click;
             // 
             // button2
             // 
@@ -501,7 +502,7 @@
         private Button button1;
         private TableLayoutPanel tableLayoutPanel2;
         private Button button2;
-        private Button button3;
+        private Button addTaskButton;
         private Button button4;
         private TableLayoutPanel tableLayoutPanel3;
         private Label label1;
