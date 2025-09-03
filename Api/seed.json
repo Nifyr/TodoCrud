@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "title": "Buy groceries",
+    "completed": false,
+    "dueDate": "2023-12-01T17:00:00Z",
+    "createdAt": "2023-11-20T10:00:00Z",
+    "updatedAt": "2023-11-20T10:00:00Z",
+    "tags": [ "shopping", "errands" ]
+  },
+  {
+    "id": 2,
+    "title": "Finish project report",
+    "completed": true,
+    "dueDate": "2023-11-25T23:59:59Z",
+    "createdAt": "2023-11-15T09:30:00Z",
+    "updatedAt": "2023-11-24T16:45:00Z",
+    "tags": [ "work", "urgent" ]
+  },
+  {
+    "id": 3,
+    "title": "Schedule dentist appointment",
+    "completed": false,
+    "dueDate": null,
+    "createdAt": "2023-11-18T14:20:00Z",
+    "updatedAt": "2023-11-18T14:20:00Z",
+    "tags": [ "health" ]
+  },
+  {
+    "id": 4,
+    "title": "Plan weekend trip",
+    "completed": false,
+    "dueDate": "2023-12-05T12:00:00Z",
+    "createdAt": "2023-11-19T11:15:00Z",
+    "updatedAt": "2023-11-19T11:15:00Z",
+    "tags": [ "travel", "leisure" ]
+  },
+  {
+    "id": 5,
+    "title": "Read new book",
+    "completed": true,
+    "dueDate": null,
+    "createdAt": "2023-11-10T08:00:00Z",
+    "updatedAt": "2023-11-22T18:30:00Z",
+    "tags": [ "personal development" ]
+  },
+  {
+    "id": 6,
+    "title": "Clean the house",
+    "completed": false,
+    "dueDate": "2023-11-30T15:00:00Z",
+    "createdAt": "2023-11-17T13:45:00Z",
+    "updatedAt": "2023-11-17T13:45:00Z",
+    "tags": [ "chores" ]
+  },
+  {
+    "id": 7,
+    "title": "Prepare presentation for meeting",
+    "completed": false,
+    "dueDate": "2023-12-02T09:00:00Z",
+    "createdAt": "2023-11-21T10:30:00Z",
+    "updatedAt": "2023-11-21T10:30:00Z",
+    "tags": [ "work" ]
+  },
+  {
+    "id": 8,
+    "title": "Exercise for 30 minutes",
+    "completed": true,
+    "dueDate": null,
+    "createdAt": "2023-11-12T07:00:00Z",
+    "updatedAt": "2023-11-23T19:00:00Z",
+    "tags": [ "health", "fitness" ]
+  },
+  {
+    "id": 9,
+    "title": "Call mom",
+    "completed": false,
+    "dueDate": null,
+    "createdAt": "2023-11-14T16:00:00Z",
+    "updatedAt": "2023-11-14T16:00:00Z",
+    "tags": [ "family" ]
+  },
+  {
+    "id": 10,
+    "title": "Organize workspace",
+    "completed": false,
+    "dueDate": "2023-11-28T18:00:00Z",
+    "createdAt": "2023-11-16T12:00:00Z",
+    "updatedAt": "2023-11-16T12:00:00Z",
+    "tags": [ "productivity" ]
+  }
+]

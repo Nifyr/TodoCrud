@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 using TodoCrud.Api.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +30,21 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<TodoContext>();
     db.Database.EnsureCreated();
+
+    // Seed initial data if the database is empty
+    if (!db.Tasks.Any())
+    {
+        var seedFile = Path.Combine(AppContext.BaseDirectory, "seed.json");
+        if (File.Exists(seedFile))
+        {
+            var json = File.ReadAllText(seedFile);
+            var tasks = JsonSerializer.Deserialize<List<TodoCrud.Entities.Task>>(json, jsonOptions) ?? [];
+
+            db.Tasks.AddRange(tasks);
+            db.SaveChanges();
+            Console.WriteLine($"Seeded {tasks.Count} tasks.");
+        }
+    }
 }
 
 // Configure the HTTP request pipeline.
@@ -46,4 +62,7 @@ app.MapControllers();
 
 app.Run();
 
-public partial class Program { }
+public partial class Program 
+{
+    public static readonly JsonSerializerOptions jsonOptions = new(JsonSerializerDefaults.Web);
+}
