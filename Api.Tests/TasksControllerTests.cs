@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net;
 using System.Net.Http.Json;
 
@@ -17,7 +18,7 @@ namespace TodoCrud.Api.Tests
             _factory ??= new WebApplicationFactory<Program>()
                 .WithWebHostBuilder(builder =>
                 {
-                    // Optionally configure in-memory DB here if needed
+                    builder.UseEnvironment("Testing");
                 });
 
             _client = _factory.CreateClient();
