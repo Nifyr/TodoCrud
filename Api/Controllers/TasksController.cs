@@ -19,7 +19,7 @@ namespace TodoCrud.Api.Controllers
             {
                 // Check both title and tags for the query string, case insensitive
                 result = result.Where(t => t.Title.Contains(query, StringComparison.OrdinalIgnoreCase)
-                || t.Tags.Any(s => s.Contains(query)));
+                || t.Tags.Any(s => s.Contains(query, StringComparison.OrdinalIgnoreCase)));
             }
 
             if (completed.HasValue)
