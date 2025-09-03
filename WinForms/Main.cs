@@ -159,6 +159,10 @@ namespace TodoCrud.WinForms
                 MessageBox.Show("No task selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            DialogResult result = MessageBox.Show($"Are you sure you want to delete the task \"{task.Title}\"?",
+                "Confirm Deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (result != DialogResult.Yes)
+                return;
             apiClient.DeleteTask(task.Id).Handle(_ =>
             {
                 Populate(null);
