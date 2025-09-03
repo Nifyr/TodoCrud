@@ -32,7 +32,7 @@ using (var scope = app.Services.CreateScope())
     db.Database.EnsureCreated();
 
     // Seed initial data if the database is empty
-    if (!db.Tasks.Any())
+    if (app.Environment.IsDevelopment() && !db.Tasks.Any())
     {
         var seedFile = Path.Combine(AppContext.BaseDirectory, "seed.json");
         if (File.Exists(seedFile))
