@@ -33,7 +33,7 @@
             tableLayoutPanel2 = new TableLayoutPanel();
             textBox1 = new TextBox();
             button1 = new Button();
-            button4 = new Button();
+            deleteTaskButton = new Button();
             addTaskButton = new Button();
             button2 = new Button();
             showCompletedCheckBox = new CheckBox();
@@ -110,7 +110,7 @@
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle());
             tableLayoutPanel2.Controls.Add(textBox1, 0, 0);
             tableLayoutPanel2.Controls.Add(button1, 1, 0);
-            tableLayoutPanel2.Controls.Add(button4, 5, 0);
+            tableLayoutPanel2.Controls.Add(deleteTaskButton, 5, 0);
             tableLayoutPanel2.Controls.Add(addTaskButton, 4, 0);
             tableLayoutPanel2.Controls.Add(button2, 3, 0);
             tableLayoutPanel2.Controls.Add(showCompletedCheckBox, 2, 0);
@@ -142,16 +142,17 @@
             button1.Text = "Search";
             button1.UseVisualStyleBackColor = true;
             // 
-            // button4
+            // deleteTaskButton
             // 
-            button4.AutoSize = true;
-            button4.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            button4.Location = new Point(741, 3);
-            button4.Name = "button4";
-            button4.Size = new Size(50, 25);
-            button4.TabIndex = 4;
-            button4.Text = "Delete";
-            button4.UseVisualStyleBackColor = true;
+            deleteTaskButton.AutoSize = true;
+            deleteTaskButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            deleteTaskButton.Location = new Point(741, 3);
+            deleteTaskButton.Name = "deleteTaskButton";
+            deleteTaskButton.Size = new Size(50, 25);
+            deleteTaskButton.TabIndex = 4;
+            deleteTaskButton.Text = "Delete";
+            deleteTaskButton.UseVisualStyleBackColor = true;
+            deleteTaskButton.Click += DeleteTaskButton_Click;
             // 
             // addTaskButton
             // 
@@ -503,7 +504,7 @@
         private TableLayoutPanel tableLayoutPanel2;
         private Button button2;
         private Button addTaskButton;
-        private Button button4;
+        private Button deleteTaskButton;
         private TableLayoutPanel tableLayoutPanel3;
         private Label label1;
         private Label label2;

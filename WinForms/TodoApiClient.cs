@@ -5,6 +5,7 @@ namespace TodoCrud.WinForms
     internal class TodoApiClient()
     {
         private const string BASE_URL = "http://localhost:5185/";
+        private const string PATH_TASKS = "tasks";
 
         private readonly HttpClient _client = new()
         {
@@ -24,38 +25,29 @@ namespace TodoCrud.WinForms
             public string? ErrorMessage { get; set; }
         }
 
-        // Centralized method to handle API requests with error handling and deserialization
-        private static ApiResponse<T> ExecuteWithHandling<T>(Func<HttpResponseMessage> requestFunc)
+        // Method to get raw HttpResponseMessage with error handling
+        private static ApiResponse<HttpResponseMessage> GetRawResponse(Func<HttpResponseMessage> requestFunc)
         {
             try
             {
                 HttpResponseMessage response = requestFunc();
                 if (!response.IsSuccessStatusCode)
                 {
-                    return new ApiResponse<T>
+                    return new ApiResponse<HttpResponseMessage>
                     {
                         Success = false,
                         ErrorMessage = $"API returned status code {response.StatusCode}"
                     };
                 }
-                T? content = response.Content.ReadFromJsonAsync<T>().Result;
-                if (content is null)
-                {
-                    return new ApiResponse<T>
-                    {
-                        Success = false,
-                        ErrorMessage = "Failed to deserialize API response"
-                    };
-                }
-                return new ApiResponse<T>
+                return new ApiResponse<HttpResponseMessage>
                 {
                     Success = true,
-                    Content = content
+                    Content = response
                 };
             }
             catch (HttpRequestException ex)
             {
-                return new ApiResponse<T>
+                return new ApiResponse<HttpResponseMessage>
                 {
                     Success = false,
                     ErrorMessage = $"HTTP request failed: {ex.Message}"
@@ -63,7 +55,7 @@ namespace TodoCrud.WinForms
             }
             catch (Exception ex)
             {
-                return new ApiResponse<T>
+                return new ApiResponse<HttpResponseMessage>
                 {
                     Success = false,
                     ErrorMessage = $"Unexpected error: {ex.Message}"
@@ -71,9 +63,66 @@ namespace TodoCrud.WinForms
             }
         }
 
+        // Generic method to execute API calls with error handling and deserialization
+        private static ApiResponse<T> ExecuteWithHandling<T>(Func<HttpResponseMessage> requestFunc)
+        {
+            ApiResponse<HttpResponseMessage> rawResponse = GetRawResponse(requestFunc);
+            if (!rawResponse.Success || rawResponse.Content is null)
+            {
+                return new ApiResponse<T>
+                {
+                    Success = false,
+                    ErrorMessage = rawResponse.ErrorMessage
+                };
+            }
+            T? content = rawResponse.Content.Content.ReadFromJsonAsync<T>().Result;
+            if (content is null)
+            {
+                return new ApiResponse<T>
+                {
+                    Success = false,
+                    ErrorMessage = "Failed to deserialize API response"
+                };
+            }
+            return new ApiResponse<T>
+            {
+                Success = true,
+                Content = content
+            };
+        }
+
+        // Overload for methods that don't return content (e.g., DELETE)
+        private static ApiResponse<bool> ExecuteWithHandling(Func<HttpResponseMessage> requestFunc)
+        {
+            ApiResponse<HttpResponseMessage> rawResponse = GetRawResponse(requestFunc);
+            if (!rawResponse.Success)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    ErrorMessage = rawResponse.ErrorMessage
+                };
+            }
+            return new ApiResponse<bool>
+            {
+                Success = true,
+                Content = true
+            };
+        }
+
+        private static bool IsValidTitle(string title) =>
+            title.Length >= Entities.Task.TitleMinLength &&
+            title.Length <= Entities.Task.TitleMaxLength;
+
+        private static ApiResponse<T> InvalidTitleResponse<T>() => new()
+        {
+            Success = false,
+            ErrorMessage = $"Title must be between {Entities.Task.TitleMinLength} and {Entities.Task.TitleMaxLength} characters"
+        };
+
         internal ApiResponse<List<Entities.Task>> GetTasks(SearchFilter? filter)
         {
-            string queryString = "tasks";
+            string queryString = PATH_TASKS;
             if (filter is not null)
             {
                 List<string> queryParams = [];
@@ -94,17 +143,38 @@ namespace TodoCrud.WinForms
                 _client.GetAsync(queryString).GetAwaiter().GetResult());
         }
 
-        internal ApiResponse<Entities.Task> AddNewTask()
+        internal ApiResponse<Entities.Task> AddNewTask(string? title)
         {
+            title ??= "New Task";
+            if (!IsValidTitle(title))
+            {
+                return InvalidTitleResponse<Entities.Task>();
+            }
             Entities.Task newTask = new()
             {
-                Title = "New Task",
+                Title = title,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
                 Tags = []
             };
             return ExecuteWithHandling<Entities.Task>(() =>
-                _client.PostAsJsonAsync("tasks", newTask).GetAwaiter().GetResult());
+                _client.PostAsJsonAsync(PATH_TASKS, newTask).GetAwaiter().GetResult());
+        }
+
+        internal ApiResponse<Entities.Task> UpdateTask(int id, Entities.Task updatedTask)
+        {
+            if (!IsValidTitle(updatedTask.Title))
+            {
+                return InvalidTitleResponse<Entities.Task>();
+            }
+            return ExecuteWithHandling<Entities.Task>(() =>
+                _client.PutAsJsonAsync($"{PATH_TASKS}/{id}", updatedTask).GetAwaiter().GetResult());
+        }
+
+        internal ApiResponse<bool> DeleteTask(int id)
+        {
+            return ExecuteWithHandling(() =>
+                _client.DeleteAsync($"{PATH_TASKS}/{id}").GetAwaiter().GetResult());
         }
     }
 }

@@ -13,8 +13,18 @@ namespace TodoCrud.WinForms
 
         private void Populate(TodoApiClient.SearchFilter? filter)
         {
-            apiClient.GetTasks(filter).Handle(tasks => {
+            apiClient.GetTasks(filter).Handle(tasks =>
+            {
                 taskListBox.DataSource = tasks;
+                if (tasks.Count > 0)
+                {
+                    taskListBox.SelectedIndex = 0;
+                }
+                else
+                {
+                    DisableTaskInputControls();
+                    ClearTaskDisplay();
+                }
             });
         }
 
@@ -103,7 +113,7 @@ namespace TodoCrud.WinForms
 
         private void AddTaskButton_Click(object sender, EventArgs e)
         {
-            apiClient.AddNewTask().Handle(task =>
+            apiClient.AddNewTask(null).Handle(task =>
             {
                 IEnumerable<Entities.Task>? newTasks = [];
                 if (taskListBox.DataSource is IEnumerable<Entities.Task> tasks)
@@ -112,6 +122,19 @@ namespace TodoCrud.WinForms
                 }
                 taskListBox.DataSource = newTasks.Append(task).ToList();
                 taskListBox.SelectedItem = task;
+            });
+        }
+
+        private void DeleteTaskButton_Click(object sender, EventArgs e)
+        {
+            if (taskListBox.SelectedItem is not Entities.Task task)
+            {
+                MessageBox.Show("No task selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            apiClient.DeleteTask(task.Id).Handle(_ =>
+            {
+                Populate(null);
             });
         }
     }
