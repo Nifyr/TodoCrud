@@ -33,9 +33,10 @@
             tableLayoutPanel2 = new TableLayoutPanel();
             textBox1 = new TextBox();
             button1 = new Button();
-            button2 = new Button();
-            button3 = new Button();
             button4 = new Button();
+            button3 = new Button();
+            button2 = new Button();
+            showCompletedCheckBox = new CheckBox();
             taskListBox = new ListBox();
             panel2 = new Panel();
             tableLayoutPanel3 = new TableLayoutPanel();
@@ -100,17 +101,19 @@
             // 
             tableLayoutPanel2.AutoSize = true;
             tableLayoutPanel2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            tableLayoutPanel2.ColumnCount = 5;
+            tableLayoutPanel2.ColumnCount = 6;
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle());
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle());
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle());
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle());
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle());
             tableLayoutPanel2.Controls.Add(textBox1, 0, 0);
             tableLayoutPanel2.Controls.Add(button1, 1, 0);
-            tableLayoutPanel2.Controls.Add(button2, 2, 0);
-            tableLayoutPanel2.Controls.Add(button3, 3, 0);
-            tableLayoutPanel2.Controls.Add(button4, 4, 0);
+            tableLayoutPanel2.Controls.Add(button4, 5, 0);
+            tableLayoutPanel2.Controls.Add(button3, 4, 0);
+            tableLayoutPanel2.Controls.Add(button2, 3, 0);
+            tableLayoutPanel2.Controls.Add(showCompletedCheckBox, 2, 0);
             tableLayoutPanel2.Dock = DockStyle.Fill;
             tableLayoutPanel2.Location = new Point(0, 0);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -124,31 +127,31 @@
             textBox1.Dock = DockStyle.Fill;
             textBox1.Location = new Point(3, 3);
             textBox1.Name = "textBox1";
-            textBox1.PlaceholderText = "Search...";
-            textBox1.Size = new Size(567, 23);
+            textBox1.PlaceholderText = "Search tasks...";
+            textBox1.Size = new Size(446, 23);
             textBox1.TabIndex = 0;
             // 
             // button1
             // 
             button1.AutoSize = true;
             button1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            button1.Location = new Point(576, 3);
+            button1.Location = new Point(455, 3);
             button1.Name = "button1";
             button1.Size = new Size(52, 25);
             button1.TabIndex = 1;
             button1.Text = "Search";
             button1.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // button4
             // 
-            button2.AutoSize = true;
-            button2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            button2.Location = new Point(634, 3);
-            button2.Name = "button2";
-            button2.Size = new Size(56, 25);
-            button2.TabIndex = 2;
-            button2.Text = "Refresh";
-            button2.UseVisualStyleBackColor = true;
+            button4.AutoSize = true;
+            button4.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            button4.Location = new Point(741, 3);
+            button4.Name = "button4";
+            button4.Size = new Size(50, 25);
+            button4.TabIndex = 4;
+            button4.Text = "Delete";
+            button4.UseVisualStyleBackColor = true;
             // 
             // button3
             // 
@@ -161,16 +164,27 @@
             button3.Text = "Add";
             button3.UseVisualStyleBackColor = true;
             // 
-            // button4
+            // button2
             // 
-            button4.AutoSize = true;
-            button4.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            button4.Location = new Point(741, 3);
-            button4.Name = "button4";
-            button4.Size = new Size(50, 25);
-            button4.TabIndex = 4;
-            button4.Text = "Delete";
-            button4.UseVisualStyleBackColor = true;
+            button2.AutoSize = true;
+            button2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            button2.Location = new Point(634, 3);
+            button2.Name = "button2";
+            button2.Size = new Size(56, 25);
+            button2.TabIndex = 2;
+            button2.Text = "Refresh";
+            button2.UseVisualStyleBackColor = true;
+            // 
+            // showCompletedCheckBox
+            // 
+            showCompletedCheckBox.Anchor = AnchorStyles.Left;
+            showCompletedCheckBox.AutoSize = true;
+            showCompletedCheckBox.Location = new Point(513, 6);
+            showCompletedCheckBox.Name = "showCompletedCheckBox";
+            showCompletedCheckBox.Size = new Size(115, 19);
+            showCompletedCheckBox.TabIndex = 5;
+            showCompletedCheckBox.Text = "Show completed";
+            showCompletedCheckBox.UseVisualStyleBackColor = true;
             // 
             // taskListBox
             // 
@@ -510,5 +524,6 @@
         private TextBox tagTextBox;
         private Button removeTagButton;
         private Button addTagButton;
+        private CheckBox showCompletedCheckBox;
     }
 }
