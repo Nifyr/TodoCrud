@@ -332,6 +332,7 @@
             titleTextBox.Name = "titleTextBox";
             titleTextBox.Size = new Size(544, 23);
             titleTextBox.TabIndex = 8;
+            titleTextBox.KeyDown += TitleTextBox_KeyDown;
             // 
             // completedCheckBox
             // 
@@ -344,6 +345,7 @@
             completedCheckBox.Size = new Size(15, 14);
             completedCheckBox.TabIndex = 9;
             completedCheckBox.UseVisualStyleBackColor = true;
+            completedCheckBox.CheckedChanged += SimpleUpdateEventHandler;
             // 
             // createdAtDateTimePicker
             // 
@@ -373,6 +375,7 @@
             dueDateDateTimePicker.Name = "dueDateDateTimePicker";
             dueDateDateTimePicker.Size = new Size(524, 23);
             dueDateDateTimePicker.TabIndex = 10;
+            dueDateDateTimePicker.ValueChanged += SimpleUpdateEventHandler;
             // 
             // dueDateCheckBox
             // 
@@ -385,6 +388,7 @@
             dueDateCheckBox.TabIndex = 13;
             dueDateCheckBox.Text = "checkBox2";
             dueDateCheckBox.UseVisualStyleBackColor = true;
+            dueDateCheckBox.CheckedChanged += DueDateCheckBox_CheckedChanged;
             // 
             // tableLayoutPanel4
             // 
@@ -445,6 +449,7 @@
             tagTextBox.PlaceholderText = "New tag...";
             tagTextBox.Size = new Size(260, 23);
             tagTextBox.TabIndex = 0;
+            tagTextBox.KeyDown += TagTextBox_KeyDown;
             // 
             // removeTagButton
             // 
@@ -457,6 +462,7 @@
             removeTagButton.TabIndex = 1;
             removeTagButton.Text = "Remove selected";
             removeTagButton.UseVisualStyleBackColor = true;
+            removeTagButton.Click += RemoveTagButton_Click;
             // 
             // addTagButton
             // 
@@ -469,6 +475,7 @@
             addTagButton.TabIndex = 2;
             addTagButton.Text = "Add new";
             addTagButton.UseVisualStyleBackColor = true;
+            addTagButton.Click += AddTagButton_Click;
             // 
             // Main
             // 
