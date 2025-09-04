@@ -23,10 +23,16 @@ namespace TodoCrud.WinForms
             {
                 lastSelectedTaskId = selectedTask.Id;
             }
-            TodoApiClient.SearchFilter filter = new()
+            int selectedSortingIndex = sortingOptionComboBox.SelectedIndex;
+            if (selectedSortingIndex == -1)
+            {
+                selectedSortingIndex = 0;
+            }
+            TodoApiClient.GetParams filter = new()
             {
                 SearchString = searchTextBox.Text,
-                IncludeCompleted = showCompletedCheckBox.Checked
+                IncludeCompleted = showCompletedCheckBox.Checked,
+                Sorting = (Entities.Task.SortingOptions)selectedSortingIndex
             };
             apiClient.GetTasks(filter).Handle(tasks =>
             {

@@ -12,10 +12,11 @@ namespace TodoCrud.WinForms
             BaseAddress = new Uri(BASE_URL)
         };
 
-        internal struct SearchFilter
+        internal struct GetParams
         {
-            public string SearchString { get; set; }
+            public string? SearchString { get; set; }
             public bool IncludeCompleted { get; set; }
+            public Entities.Task.SortingOptions? Sorting { get; set; }
         }
 
         internal struct ApiResponse<T>
@@ -89,7 +90,7 @@ namespace TodoCrud.WinForms
         private static ApiResponse<T> InvalidTitleResponse<T>() =>
             ErrorResponse<T>($"Title must be between {Entities.Task.TitleMinLength} and {Entities.Task.TitleMaxLength} characters");
 
-        internal ApiResponse<List<Entities.Task>> GetTasks(SearchFilter? filter)
+        internal ApiResponse<List<Entities.Task>> GetTasks(GetParams? filter)
         {
             string queryString = PATH_TASKS;
             if (filter is not null)
@@ -102,6 +103,10 @@ namespace TodoCrud.WinForms
                 if (!filter.Value.IncludeCompleted)
                 {
                     queryParams.Add("completed=false");
+                }
+                if (filter.Value.Sorting.HasValue)
+                {
+                    queryParams.Add($"sorting={filter.Value.Sorting.Value}");
                 }
                 if (queryParams.Count > 0)
                 {
