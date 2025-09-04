@@ -10,9 +10,11 @@ namespace TodoCrud.Api.Controllers
     public class TasksController(TodoContext context) : ControllerBase
     {
         private readonly TodoContext _context = context;
+        private readonly int _maxPageSize = 100;
 
         [HttpGet]
-        public ActionResult<IEnumerable<Entities.Task>> Get([FromQuery] string? query, [FromQuery] bool? completed)
+        public ActionResult<IEnumerable<Entities.Task>> Get([FromQuery] string? query, [FromQuery] bool? completed,
+            [FromQuery] Entities.Task.SortingOptions? sorting)
         {
             IEnumerable<Entities.Task> result = _context.Tasks;
             if (!string.IsNullOrWhiteSpace(query))
@@ -27,7 +29,10 @@ namespace TodoCrud.Api.Controllers
                 result = result.Where(t => t.Completed == completed.Value);
             }
 
-            return Ok(result.ToList());
+            sorting ??= Entities.Task.SortingOptions.IdAsc;
+            result = result.OrderBy(t => t, Entities.Task.GetComparer(sorting.Value));
+
+            return Ok(result.Take(_maxPageSize).ToList());
         }
 
         [HttpPost]
