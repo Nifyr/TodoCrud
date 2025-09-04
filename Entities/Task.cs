@@ -13,6 +13,9 @@
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
+        public bool HasValidTitle { get => IsValidTitle(Title); }
+        public static bool IsValidTitle(string title) =>
+            title.Length >= TitleMinLength && title.Length <= TitleMaxLength;
         public override string ToString()
         {
             return Title;

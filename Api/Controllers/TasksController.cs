@@ -33,7 +33,7 @@ namespace TodoCrud.Api.Controllers
         [HttpPost]
         public ActionResult<Entities.Task> Post([FromBody] Entities.Task newTask)
         {
-            if (!IsValidTitle(newTask.Title))
+            if (!newTask.HasValidTitle)
             {
                 return BadRequest($"Invalid title");
             }
@@ -60,7 +60,7 @@ namespace TodoCrud.Api.Controllers
             if (updates.TryGetProperty("title", out JsonElement titleElement))
             {
                 string newTitle = titleElement.GetString() ?? string.Empty;
-                if (!IsValidTitle(newTitle))
+                if (!Entities.Task.IsValidTitle(newTitle))
                 {
                     return BadRequest($"Invalid title");
                 }
@@ -121,10 +121,6 @@ namespace TodoCrud.Api.Controllers
             _context.SaveChanges();
             return Ok(existingTask);
         }
-
-        private static bool IsValidTitle(string title) =>
-            title.Length >= Entities.Task.TitleMinLength &&
-            title.Length <= Entities.Task.TitleMaxLength;
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)

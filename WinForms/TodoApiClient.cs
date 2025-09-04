@@ -110,10 +110,6 @@ namespace TodoCrud.WinForms
             };
         }
 
-        private static bool IsValidTitle(string title) =>
-            title.Length >= Entities.Task.TitleMinLength &&
-            title.Length <= Entities.Task.TitleMaxLength;
-
         private static ApiResponse<T> InvalidTitleResponse<T>() => new()
         {
             Success = false,
@@ -146,7 +142,7 @@ namespace TodoCrud.WinForms
         internal ApiResponse<Entities.Task> AddNewTask(string? title)
         {
             title ??= "New Task";
-            if (!IsValidTitle(title))
+            if (!Entities.Task.IsValidTitle(title))
             {
                 return InvalidTitleResponse<Entities.Task>();
             }
@@ -163,7 +159,7 @@ namespace TodoCrud.WinForms
 
         internal ApiResponse<Entities.Task> UpdateTask(int id, Entities.Task updatedTask)
         {
-            if (!IsValidTitle(updatedTask.Title))
+            if (!updatedTask.HasValidTitle)
             {
                 return InvalidTitleResponse<Entities.Task>();
             }
