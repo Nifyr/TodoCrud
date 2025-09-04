@@ -151,7 +151,7 @@
             deleteTaskButton.Location = new Point(741, 3);
             deleteTaskButton.Name = "deleteTaskButton";
             deleteTaskButton.Size = new Size(50, 25);
-            deleteTaskButton.TabIndex = 4;
+            deleteTaskButton.TabIndex = 5;
             deleteTaskButton.Text = "Delete";
             deleteTaskButton.UseVisualStyleBackColor = true;
             deleteTaskButton.Click += DeleteTaskButton_Click;
@@ -163,7 +163,7 @@
             addTaskButton.Location = new Point(696, 3);
             addTaskButton.Name = "addTaskButton";
             addTaskButton.Size = new Size(39, 25);
-            addTaskButton.TabIndex = 3;
+            addTaskButton.TabIndex = 4;
             addTaskButton.Text = "Add";
             addTaskButton.UseVisualStyleBackColor = true;
             addTaskButton.Click += AddTaskButton_Click;
@@ -175,7 +175,7 @@
             refreshButton.Location = new Point(634, 3);
             refreshButton.Name = "refreshButton";
             refreshButton.Size = new Size(56, 25);
-            refreshButton.TabIndex = 2;
+            refreshButton.TabIndex = 3;
             refreshButton.Text = "Refresh";
             refreshButton.UseVisualStyleBackColor = true;
             refreshButton.Click += SimpleSearchEventHandler;
@@ -187,7 +187,7 @@
             showCompletedCheckBox.Location = new Point(513, 6);
             showCompletedCheckBox.Name = "showCompletedCheckBox";
             showCompletedCheckBox.Size = new Size(115, 19);
-            showCompletedCheckBox.TabIndex = 5;
+            showCompletedCheckBox.TabIndex = 2;
             showCompletedCheckBox.Text = "Show completed";
             showCompletedCheckBox.UseVisualStyleBackColor = true;
             showCompletedCheckBox.CheckedChanged += SimpleSearchEventHandler;
@@ -325,7 +325,7 @@
             idTextBox.Location = new Point(87, 3);
             idTextBox.Name = "idTextBox";
             idTextBox.Size = new Size(544, 23);
-            idTextBox.TabIndex = 7;
+            idTextBox.TabIndex = 0;
             // 
             // titleTextBox
             // 
@@ -335,7 +335,7 @@
             titleTextBox.Location = new Point(87, 32);
             titleTextBox.Name = "titleTextBox";
             titleTextBox.Size = new Size(544, 23);
-            titleTextBox.TabIndex = 8;
+            titleTextBox.TabIndex = 2;
             titleTextBox.KeyDown += TitleTextBox_KeyDown;
             // 
             // completedCheckBox
@@ -347,7 +347,7 @@
             completedCheckBox.Location = new Point(87, 61);
             completedCheckBox.Name = "completedCheckBox";
             completedCheckBox.Size = new Size(15, 14);
-            completedCheckBox.TabIndex = 9;
+            completedCheckBox.TabIndex = 3;
             completedCheckBox.UseVisualStyleBackColor = true;
             completedCheckBox.CheckedChanged += SimpleUpdateEventHandler;
             // 
@@ -359,7 +359,7 @@
             createdAtDateTimePicker.Location = new Point(87, 110);
             createdAtDateTimePicker.Name = "createdAtDateTimePicker";
             createdAtDateTimePicker.Size = new Size(544, 23);
-            createdAtDateTimePicker.TabIndex = 11;
+            createdAtDateTimePicker.TabIndex = 6;
             // 
             // updatedAtDateTimePicker3
             // 
@@ -369,7 +369,7 @@
             updatedAtDateTimePicker3.Location = new Point(87, 139);
             updatedAtDateTimePicker3.Name = "updatedAtDateTimePicker3";
             updatedAtDateTimePicker3.Size = new Size(544, 23);
-            updatedAtDateTimePicker3.TabIndex = 12;
+            updatedAtDateTimePicker3.TabIndex = 7;
             // 
             // dueDateDateTimePicker
             // 
@@ -378,7 +378,7 @@
             dueDateDateTimePicker.Location = new Point(107, 81);
             dueDateDateTimePicker.Name = "dueDateDateTimePicker";
             dueDateDateTimePicker.Size = new Size(524, 23);
-            dueDateDateTimePicker.TabIndex = 10;
+            dueDateDateTimePicker.TabIndex = 5;
             dueDateDateTimePicker.ValueChanged += SimpleUpdateEventHandler;
             // 
             // dueDateCheckBox
@@ -389,7 +389,7 @@
             dueDateCheckBox.Location = new Point(87, 83);
             dueDateCheckBox.Name = "dueDateCheckBox";
             dueDateCheckBox.Size = new Size(14, 19);
-            dueDateCheckBox.TabIndex = 13;
+            dueDateCheckBox.TabIndex = 4;
             dueDateCheckBox.Text = "checkBox2";
             dueDateCheckBox.UseVisualStyleBackColor = true;
             dueDateCheckBox.CheckedChanged += DueDateCheckBox_CheckedChanged;
@@ -463,7 +463,7 @@
             removeTagButton.Location = new Point(3, 63);
             removeTagButton.Name = "removeTagButton";
             removeTagButton.Size = new Size(106, 25);
-            removeTagButton.TabIndex = 1;
+            removeTagButton.TabIndex = 2;
             removeTagButton.Text = "Remove selected";
             removeTagButton.UseVisualStyleBackColor = true;
             removeTagButton.Click += RemoveTagButton_Click;
@@ -476,7 +476,7 @@
             addTagButton.Location = new Point(3, 32);
             addTagButton.Name = "addTagButton";
             addTagButton.Size = new Size(64, 25);
-            addTagButton.TabIndex = 2;
+            addTagButton.TabIndex = 1;
             addTagButton.Text = "Add new";
             addTagButton.UseVisualStyleBackColor = true;
             addTagButton.Click += AddTagButton_Click;
