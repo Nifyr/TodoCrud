@@ -218,13 +218,14 @@ namespace TodoCrud.WinForms
                 Tags = [.. tagsListBox.Items.Cast<string>()]
             };
             apiClient.UpdateTask(task.Id, updatedTask).Handle(updatedTask => {
-                task.Id = updatedTask.Id;
-                task.Title = updatedTask.Title;
-                task.Completed = updatedTask.Completed;
-                task.DueDate = updatedTask.DueDate;
-                task.Tags = updatedTask.Tags;
-                task.CreatedAt = updatedTask.CreatedAt;
-                task.UpdatedAt = updatedTask.UpdatedAt;
+                // Update the task in the listbox
+                taskListBox.SelectedIndexChanged -= TaskListBox_SelectedIndexChanged!;
+                int selectedIndex = taskListBox.SelectedIndex;
+                List<Entities.Task> tasks = [.. taskListBox.Items.Cast<Entities.Task>()];
+                tasks[selectedIndex] = updatedTask;
+                taskListBox.DataSource = tasks;
+                taskListBox.SelectedIndex = selectedIndex;
+                taskListBox.SelectedIndexChanged += TaskListBox_SelectedIndexChanged!;
             });
         }
 
