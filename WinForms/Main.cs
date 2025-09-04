@@ -8,6 +8,11 @@ namespace TodoCrud.WinForms
         {
             InitializeComponent();
 
+            sortingOptionComboBox.DataSource = Enum.GetValues(typeof(Entities.Task.SortingOptions))
+                .Cast<Entities.Task.SortingOptions>()
+                .Select(o => o.GetDisplayTitle())
+                .ToList();
+
             RefreshTaskList();
         }
 
@@ -328,5 +333,21 @@ namespace TodoCrud.WinForms
                 onSuccess(response.Content);
             return true;
         }
+
+        internal static string GetDisplayTitle(this Entities.Task.SortingOptions sortingOptions) =>
+            sortingOptions switch
+            {
+                Entities.Task.SortingOptions.IdAsc => "ID Ascending",
+                Entities.Task.SortingOptions.IdDesc => "ID Descending",
+                Entities.Task.SortingOptions.TitleAsc => "Title A-Z",
+                Entities.Task.SortingOptions.TitleDesc => "Title Z-A",
+                Entities.Task.SortingOptions.DueDateAsc => "Due Date Asc",
+                Entities.Task.SortingOptions.DueDateDesc => "Due Date Desc",
+                Entities.Task.SortingOptions.CreatedAtAsc => "Creation Date Asc",
+                Entities.Task.SortingOptions.CreatedAtDesc => "Creation Date Desc",
+                Entities.Task.SortingOptions.UpdatedAtAsc => "Last Update Asc",
+                Entities.Task.SortingOptions.UpdatedAtDesc => "Last Update Desc",
+                _ => sortingOptions.ToString() ?? "Unknown"
+            };
     }
 }

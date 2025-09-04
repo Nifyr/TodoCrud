@@ -33,10 +33,11 @@
             tableLayoutPanel2 = new TableLayoutPanel();
             searchTextBox = new TextBox();
             searchButton = new Button();
+            showCompletedCheckBox = new CheckBox();
             deleteTaskButton = new Button();
             addTaskButton = new Button();
             refreshButton = new Button();
-            showCompletedCheckBox = new CheckBox();
+            sortingOptionComboBox = new ComboBox();
             taskListBox = new ListBox();
             panel2 = new Panel();
             tableLayoutPanel3 = new TableLayoutPanel();
@@ -101,8 +102,9 @@
             // 
             tableLayoutPanel2.AutoSize = true;
             tableLayoutPanel2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            tableLayoutPanel2.ColumnCount = 6;
+            tableLayoutPanel2.ColumnCount = 7;
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle());
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle());
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle());
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle());
@@ -110,10 +112,11 @@
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle());
             tableLayoutPanel2.Controls.Add(searchTextBox, 0, 0);
             tableLayoutPanel2.Controls.Add(searchButton, 1, 0);
-            tableLayoutPanel2.Controls.Add(deleteTaskButton, 5, 0);
-            tableLayoutPanel2.Controls.Add(addTaskButton, 4, 0);
-            tableLayoutPanel2.Controls.Add(refreshButton, 3, 0);
             tableLayoutPanel2.Controls.Add(showCompletedCheckBox, 2, 0);
+            tableLayoutPanel2.Controls.Add(deleteTaskButton, 6, 0);
+            tableLayoutPanel2.Controls.Add(addTaskButton, 5, 0);
+            tableLayoutPanel2.Controls.Add(refreshButton, 4, 0);
+            tableLayoutPanel2.Controls.Add(sortingOptionComboBox, 3, 0);
             tableLayoutPanel2.Dock = DockStyle.Fill;
             tableLayoutPanel2.Location = new Point(0, 0);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -128,7 +131,7 @@
             searchTextBox.Location = new Point(3, 3);
             searchTextBox.Name = "searchTextBox";
             searchTextBox.PlaceholderText = "Search tasks...";
-            searchTextBox.Size = new Size(446, 23);
+            searchTextBox.Size = new Size(319, 23);
             searchTextBox.TabIndex = 0;
             searchTextBox.KeyDown += SearchTextBox_KeyDown;
             // 
@@ -136,13 +139,25 @@
             // 
             searchButton.AutoSize = true;
             searchButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            searchButton.Location = new Point(455, 3);
+            searchButton.Location = new Point(328, 3);
             searchButton.Name = "searchButton";
             searchButton.Size = new Size(52, 25);
             searchButton.TabIndex = 1;
             searchButton.Text = "Search";
             searchButton.UseVisualStyleBackColor = true;
             searchButton.Click += SimpleSearchEventHandler;
+            // 
+            // showCompletedCheckBox
+            // 
+            showCompletedCheckBox.Anchor = AnchorStyles.Left;
+            showCompletedCheckBox.AutoSize = true;
+            showCompletedCheckBox.Location = new Point(386, 6);
+            showCompletedCheckBox.Name = "showCompletedCheckBox";
+            showCompletedCheckBox.Size = new Size(115, 19);
+            showCompletedCheckBox.TabIndex = 2;
+            showCompletedCheckBox.Text = "Show completed";
+            showCompletedCheckBox.UseVisualStyleBackColor = true;
+            showCompletedCheckBox.CheckedChanged += SimpleSearchEventHandler;
             // 
             // deleteTaskButton
             // 
@@ -180,17 +195,15 @@
             refreshButton.UseVisualStyleBackColor = true;
             refreshButton.Click += SimpleSearchEventHandler;
             // 
-            // showCompletedCheckBox
+            // sortingOptionComboBox
             // 
-            showCompletedCheckBox.Anchor = AnchorStyles.Left;
-            showCompletedCheckBox.AutoSize = true;
-            showCompletedCheckBox.Location = new Point(513, 6);
-            showCompletedCheckBox.Name = "showCompletedCheckBox";
-            showCompletedCheckBox.Size = new Size(115, 19);
-            showCompletedCheckBox.TabIndex = 2;
-            showCompletedCheckBox.Text = "Show completed";
-            showCompletedCheckBox.UseVisualStyleBackColor = true;
-            showCompletedCheckBox.CheckedChanged += SimpleSearchEventHandler;
+            sortingOptionComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            sortingOptionComboBox.FormattingEnabled = true;
+            sortingOptionComboBox.Location = new Point(507, 3);
+            sortingOptionComboBox.Name = "sortingOptionComboBox";
+            sortingOptionComboBox.Size = new Size(121, 23);
+            sortingOptionComboBox.TabIndex = 6;
+            sortingOptionComboBox.SelectedIndexChanged += SimpleSearchEventHandler;
             // 
             // taskListBox
             // 
@@ -538,5 +551,6 @@
         private Button removeTagButton;
         private Button addTagButton;
         private CheckBox showCompletedCheckBox;
+        private ComboBox sortingOptionComboBox;
     }
 }
