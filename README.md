@@ -41,7 +41,8 @@ It is however easily adaptable to other databases supported by Entity Framework 
   - `UpdatedAt` (DateTime) which is managed by the backend and set to the current date/time whenever the task is updated.
   - `Tags` (a list of strings) which can contain any number of strings of any length.
 - The API exposes the following endpoints:
-  - `GET /tasks?query={string}&completed={bool}` to retrieve all tasks, optionally filtered by a search query (which matches the title or tags) and/or completion status.
+  - `GET /tasks?query={string}&completed={bool}&sorting={int}` to retrieve all tasks, optionally filtered by a search query (which matches the title or tags) and/or completion status.
+Sorting parameter indicates sorting mode. Tasks are sorted by Id by default.
   - `POST /tasks` to create a new task with a JSON body containing the `Title`.
   - `PUT /tasks/{id}` to update an existing task with a JSON body containing any subset of the fields `Title`, `Completed`, `DueDate`, and `Tags`.
   - `DELETE /tasks/{id}` to delete a task by its ID.
