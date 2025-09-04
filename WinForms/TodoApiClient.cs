@@ -25,6 +25,18 @@ namespace TodoCrud.WinForms
             public string? ErrorMessage { get; set; }
         }
 
+        private static ApiResponse<T> ErrorResponse<T>(string? message) => new()
+        {
+            Success = false,
+            ErrorMessage = message
+        };
+
+        private static ApiResponse<T> SuccessResponse<T>(T? content) => new()
+        {
+            Success = true,
+            Content = content
+        };
+
         // Method to get raw HttpResponseMessage with error handling
         private static ApiResponse<HttpResponseMessage> GetRawResponse(Func<HttpResponseMessage> requestFunc)
         {
@@ -33,33 +45,17 @@ namespace TodoCrud.WinForms
                 HttpResponseMessage response = requestFunc();
                 if (!response.IsSuccessStatusCode)
                 {
-                    return new ApiResponse<HttpResponseMessage>
-                    {
-                        Success = false,
-                        ErrorMessage = $"API returned status code {response.StatusCode}"
-                    };
+                    return ErrorResponse<HttpResponseMessage>($"API returned status code {response.StatusCode}");
                 }
-                return new ApiResponse<HttpResponseMessage>
-                {
-                    Success = true,
-                    Content = response
-                };
+                return SuccessResponse(response);
             }
             catch (HttpRequestException ex)
             {
-                return new ApiResponse<HttpResponseMessage>
-                {
-                    Success = false,
-                    ErrorMessage = $"HTTP request failed: {ex.Message}"
-                };
+                return ErrorResponse<HttpResponseMessage>($"HTTP request failed: {ex.Message}");
             }
             catch (Exception ex)
             {
-                return new ApiResponse<HttpResponseMessage>
-                {
-                    Success = false,
-                    ErrorMessage = $"Unexpected error: {ex.Message}"
-                };
+                return ErrorResponse<HttpResponseMessage>($"Unexpected error: {ex.Message}");
             }
         }
 
@@ -69,26 +65,14 @@ namespace TodoCrud.WinForms
             ApiResponse<HttpResponseMessage> rawResponse = GetRawResponse(requestFunc);
             if (!rawResponse.Success || rawResponse.Content is null)
             {
-                return new ApiResponse<T>
-                {
-                    Success = false,
-                    ErrorMessage = rawResponse.ErrorMessage
-                };
+                return ErrorResponse<T>(rawResponse.ErrorMessage);
             }
             T? content = rawResponse.Content.Content.ReadFromJsonAsync<T>().Result;
             if (content is null)
             {
-                return new ApiResponse<T>
-                {
-                    Success = false,
-                    ErrorMessage = "Failed to deserialize API response"
-                };
+                return ErrorResponse<T>("Failed to deserialize API response");
             }
-            return new ApiResponse<T>
-            {
-                Success = true,
-                Content = content
-            };
+            return SuccessResponse(content);
         }
 
         // Overload for methods that don't return content (e.g., DELETE)
@@ -97,24 +81,13 @@ namespace TodoCrud.WinForms
             ApiResponse<HttpResponseMessage> rawResponse = GetRawResponse(requestFunc);
             if (!rawResponse.Success)
             {
-                return new ApiResponse<bool>
-                {
-                    Success = false,
-                    ErrorMessage = rawResponse.ErrorMessage
-                };
+                return ErrorResponse<bool>(rawResponse.ErrorMessage);
             }
-            return new ApiResponse<bool>
-            {
-                Success = true,
-                Content = true
-            };
+            return SuccessResponse(true);
         }
 
-        private static ApiResponse<T> InvalidTitleResponse<T>() => new()
-        {
-            Success = false,
-            ErrorMessage = $"Title must be between {Entities.Task.TitleMinLength} and {Entities.Task.TitleMaxLength} characters"
-        };
+        private static ApiResponse<T> InvalidTitleResponse<T>() =>
+            ErrorResponse<T>($"Title must be between {Entities.Task.TitleMinLength} and {Entities.Task.TitleMaxLength} characters");
 
         internal ApiResponse<List<Entities.Task>> GetTasks(SearchFilter? filter)
         {
